@@ -30,7 +30,26 @@ const [isRotating, setIsRotating] = useState(false); //to implement the drag and
     return [screenScale, screenPosition, rotation]
   }
 
+  // Adjust Plane's rotation that was facing the user at first
+  const adjustPlaneForScreenSize = () => { //to scale the plane size according to Screen size
+    let screenScale, screenPosition;
+
+    if (window.innerWidth < 768 ){
+      screenScale = [1.5, 1.5, 1.5];
+      screenPosition = [0, -1.5, 0]
+    } else {
+      screenScale = [3, 3, 3];
+      screenPosition = [0, -4, 0]
+    }
+
+    return [screenScale, screenPosition]
+  }
+
   const [ islandScale, islandPosition, islandRotation ] = adjustIslandForScreenSize(); // pass them as props to the Island element
+  
+  //Invoke / call the plane function like a hook
+  const [ planeScale, planePosition ]= adjustPlaneForScreenSize();
+
   return (
     <section className="w-full h-screen relative">
       <Canvas
@@ -55,7 +74,12 @@ const [isRotating, setIsRotating] = useState(false); //to implement the drag and
             setIsRotating={setIsRotating}
 
           />
-          <Plane />
+          <Plane 
+            isRotating = {isRotating}
+            planePosition = {planePosition}
+            planeScale = {planeScale}
+            rotation={[0, 20, 0]}
+          />
         </Suspense>
       </Canvas>
     </section>
