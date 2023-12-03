@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { Canvas } from "@react-three/fiber";
 import Loader from '../components/Loader';
 
@@ -12,6 +12,10 @@ import Plane from '../models/Plane';
       </div> */}
 
 const Home = () => {
+
+//State
+const [isRotating, setIsRotating] = useState(false); //to implement the drag and drop feature --> based on state you'll affect Canvas style
+
   const adjustIslandForScreenSize = () => { //to scale the island size according to Screen size
     let screenScale = null;
     let screenPosition = [0, -6.5, -43];
@@ -30,7 +34,7 @@ const Home = () => {
   return (
     <section className="w-full h-screen relative">
       <Canvas
-        className="w-full h-screen bg-transparent"
+        className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`} //affect rotation style based on isRotating state
         camera={{ near: 0.1, far: 1000, }}
       >
         <Suspense fallback={<Loader />}>
@@ -46,6 +50,9 @@ const Home = () => {
             position = {islandPosition}
             scale = {islandScale}
             rotation = {islandRotation}
+            //pass the rotating state to this element
+            isRotating={isRotating}
+            setIsRotating={setIsRotating}
 
           />
           <Plane />
