@@ -4,6 +4,8 @@ import Loader from '../components/Loader';
 
 import Island from '../models/Island'
 import Sky from '../models/Sky';
+import Bird from '../models/Bird';
+import Plane from '../models/Plane';
 
 {/*       <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
         POPUP
@@ -38,6 +40,7 @@ const Home = () => {
           {/* <spotLight />  */}{/* is similar to the point light --> it emits light from one direction but in the shape on a cone*/}
           <hemisphereLight skyColor="#b1eff" groundColor="#000000" intensity ={1}/> {/* Illuminates the scene with a gradient --> adds detail*/}
           
+          <Bird />
           <Sky />
           <Island 
             position = {islandPosition}
@@ -45,6 +48,7 @@ const Home = () => {
             rotation = {islandRotation}
 
           />
+          <Plane />
         </Suspense>
       </Canvas>
     </section>
