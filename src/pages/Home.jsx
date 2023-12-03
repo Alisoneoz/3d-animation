@@ -31,12 +31,11 @@ const Home = () => {
         camera={{ near: 0.1, far: 1000, }}
       >
         <Suspense fallback={<Loader />}>
-          <directionalLight position = {[1,1,1]}  intensity={2}/>
-          <ambientLight />
-          <pointLight />
-          <spotLight />
-          <hemisphereLight />
-
+          <directionalLight position = {[10,1,1]}/*first value in the array moves the sun*/  intensity={2}/>
+          <ambientLight intensity={0.5}/> {/* illuminates all the objects equally without casting shadows*/}
+         {/* <pointLight /> */} {/* emits light in all directions --> we don't need it be cause we have the sun ☀*/}
+          {/* <spotLight />  */}{/* is similar to the point light --> it emits light from one direction but in the shape on a cone*/}
+          <hemisphereLight skyColor="#b1eff" groundColor="#000000" intensity ={1}/> {/* Illuminates the scene with a gradient --> adds detail*/}
           <Island 
             position = {islandPosition}
             scale = {islandScale}
