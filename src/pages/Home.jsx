@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import Loader from '../components/Loader';
 
 import Island from '../models/Island'
+import Sky from '../models/Sky';
 
 {/*       <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
         POPUP
@@ -36,6 +37,8 @@ const Home = () => {
          {/* <pointLight /> */} {/* emits light in all directions --> we don't need it be cause we have the sun ☀*/}
           {/* <spotLight />  */}{/* is similar to the point light --> it emits light from one direction but in the shape on a cone*/}
           <hemisphereLight skyColor="#b1eff" groundColor="#000000" intensity ={1}/> {/* Illuminates the scene with a gradient --> adds detail*/}
+          
+          <Sky />
           <Island 
             position = {islandPosition}
             scale = {islandScale}
