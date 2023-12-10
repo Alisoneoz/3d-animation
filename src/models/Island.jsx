@@ -14,8 +14,88 @@ import { a } from '@react-spring/three';
 
 import islandScene from '../assets/3d/island.glb';
 
-const Island = (props) => {
+const Island = ({ isRotating, setIsRotating, ...props }) => {
+
     const { nodes, materials } = useGLTF(islandScene);
+
+    // Access the 3DJS renderer and the viewport --> it's a hook
+    const { gl, viewport } = useThree();
+    
+    //use the useRef hook to get the last mouse position
+    const lastX = useRef(0); //for the horizontal position
+    const rotationSpeed = useRef(0)//for the rotation speed
+    //use a 'damping factor' --> plays important role in controlling how fast it moves when scrolling, and how it continues to move afterwards
+    const dampingFactor = 0.95;
+    
+    //controlling animation behaviour based on mouse movement
+        //functions to control each mouse behaviour
+            //controls what happens when pressing thew mouse down
+            const handlePointerDown = (e) => {
+                e.stopPropagation(); // the mouse will limit its action to what it does on this function without affectin other elements or functions on the screen --> so it will not propagate
+                e.preventDefault(); // As you know, it prevents the page reloading 
+                setIsRotating(true); //turns it on
+
+                //figuring out if the touch event is on a phone or a mouse
+                const clientX = e.touches 
+                ? e.touches[0].clientX
+                : e.clientX;
+
+                //store the last position of the X
+                lastX.current = clientX;
+            };
+
+            //controls what happens when the mouse is released (not being pressed)
+             const handlePointerUp = (e) => {
+                e.stopPropagation(); 
+                e.preventDefault();
+                setIsRotating(false); //turns it OFF
+
+                //figuring out if the touch event is on a phone or a mouse
+                const clientX = e.touches 
+                    ? e.touches[0].clientX
+                    : e.clientX;
+
+                //calculate the change in the horizontal position
+                const delta = clientX - lastX.current / viewport.width;
+
+                //update islad rotation based on the mouse
+                islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+
+                //update the reference for the last clientX position
+                lastX.current = clientX;
+
+                //update the rotation speed
+                rotationSpeed.current = delta * 0.01 * Math.PI;
+            
+            };
+
+            // only happens if it's rotating
+            const handlePointerMove = (e) => {
+                e.stopPropagation(); // the mouse will limit its action to what it does on this function without affectin other elements or functions on the screen --> so it will not propagate
+                e.preventDefault(); // As you know, it prevents the page reloading 
+                 // will not affect isRotating state
+                // only happens if it's rotating
+                if (isRotating) {
+                    handlePointerUp(e);
+                }
+
+            };
+
+    //triggering the control handling functions
+
+    useEffect (()=>{
+        //add event listeners for all pointers to
+        document.addEventListener('pointerdown', handlePointerDown);
+        document.addEventListener('pointerup', handlePointerUp);
+        document.addEventListener('pointermove', handlePointerMove);
+
+        return () => { //removes the events from the canvas once the user exits the page
+            document.addEventListener('pointerdown', handlePointerDown);
+            document.addEventListener('pointerup', handlePointerUp);
+            document.addEventListener('pointermove', handlePointerMove);
+        }
+    }, [gl, handlePointerDown, handlePointerUp, handlePointerMove])
+
     const islandRef = useRef();
     return (
         <a.group ref={islandRef} {...props} >
