@@ -150,17 +150,18 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
     })
         //triggering the control handling functions
     useEffect (()=>{
+        const canvas = gl.domElement;
         //add event listeners for all pointers to
-        document.addEventListener('pointerdown', handlePointerDown);
-        document.addEventListener('pointerup', handlePointerUp);
-        document.addEventListener('pointermove', handlePointerMove);
+        canvas.addEventListener('pointerdown', handlePointerDown);
+        canvas.addEventListener('pointerup', handlePointerUp);
+        canvas.addEventListener('pointermove', handlePointerMove);
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
 
         return () => { //removes the events from the canvas once the user exits the page
-            document.addEventListener('pointerdown', handlePointerDown);
-            document.addEventListener('pointerup', handlePointerUp);
-            document.addEventListener('pointermove', handlePointerMove);
+            canvas.addEventListener('pointerdown', handlePointerDown);
+            canvas.addEventListener('pointerup', handlePointerUp);
+            canvas.addEventListener('pointermove', handlePointerMove);
             document.addEventListener('keydown', handleKeyDown);
             document.addEventListener('keyup', handleKeyUp);
         }
