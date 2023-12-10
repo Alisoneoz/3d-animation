@@ -49,24 +49,6 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
                 e.stopPropagation(); 
                 e.preventDefault();
                 setIsRotating(false); //turns it OFF
-
-                //figuring out if the touch event is on a phone or a mouse
-                const clientX = e.touches 
-                    ? e.touches[0].clientX
-                    : e.clientX;
-
-                //calculate the change in the horizontal position
-                const delta = clientX - lastX.current / viewport.width;
-
-                //update islad rotation based on the mouse
-                islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-
-                //update the reference for the last clientX position
-                lastX.current = clientX;
-
-                //update the rotation speed
-                rotationSpeed.current = delta * 0.01 * Math.PI;
-            
             };
 
             // only happens if it's rotating
@@ -76,7 +58,15 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
                  // will not affect isRotating state
                 // only happens if it's rotating
                 if (isRotating) {
-                    handlePointerUp(e);
+                    const clientX = e.touches
+                    ? e.touches[0].clientX
+                    :e.clientX
+
+                    const delta = (clientX - lastX.current) / viewport.width;
+
+                    islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+                    lastX.current = clientX;
+                    rotationSpeed.current = delta * 0.01 * Math.PI;
                 }
 
             };
@@ -104,7 +94,7 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
 
             //make it to completely stop the rotation is the speed is slow
             if(Math.abs(rotationSpeed.current) < 0.001){
-                rotationSpeed = 0;
+                rotationSpeed.current = 0;
             }
         } else { 
             //get the current rotation
