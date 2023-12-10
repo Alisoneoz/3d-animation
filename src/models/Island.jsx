@@ -80,19 +80,39 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
                 }
 
             };
-
-    //triggering the control handling functions
-
+    //controlling animation behaviour based on keyboard movement
+        //functions to control each keyboard
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowLeft'){
+                if(!isRotating) setIsRotating(true)
+                islandRef.current.rotation.y += 0.01 * Math.PI // we use PI be cause the island is a circle
+            } else if (e.key === 'ArrowRight') {
+                if(!isRotating) setIsRotating(true)
+                islandRef.current.rotation.y -= 0.01 * Math.PI
+            }
+        }
+    
+        const handleKeyUp = (e) => {
+            if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){
+                setIsRotating(false)
+            }
+        }
+    
+        //triggering the control handling functions
     useEffect (()=>{
         //add event listeners for all pointers to
         document.addEventListener('pointerdown', handlePointerDown);
         document.addEventListener('pointerup', handlePointerUp);
         document.addEventListener('pointermove', handlePointerMove);
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
 
         return () => { //removes the events from the canvas once the user exits the page
             document.addEventListener('pointerdown', handlePointerDown);
             document.addEventListener('pointerup', handlePointerUp);
             document.addEventListener('pointermove', handlePointerMove);
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
         }
     }, [gl, handlePointerDown, handlePointerUp, handlePointerMove])
 
