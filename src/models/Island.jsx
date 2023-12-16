@@ -96,6 +96,8 @@ const Island = ({ isRotating, setIsRotating, ...props }) => {
             if(Math.abs(rotationSpeed.current) < 0.001){
                 rotationSpeed.current = 0;
             }
+
+            islandRef.current.rotation.y += rotationSpeed.current; // will slow down the plane's speed as the user scroll
         } else { 
             //get the current rotation
             const rotation = islandRef.current.rotation.y;
