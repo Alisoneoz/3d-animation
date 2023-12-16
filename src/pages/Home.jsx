@@ -15,6 +15,7 @@ const Home = () => {
 
 //State
 const [isRotating, setIsRotating] = useState(false); //to implement the drag and drop feature --> based on state you'll affect Canvas style
+const [currentStage, setCurrentStage] = useState(1);
 
   const adjustIslandForScreenSize = () => { //to scale the island size according to Screen size
     let screenScale = null;
@@ -72,7 +73,7 @@ const [isRotating, setIsRotating] = useState(false); //to implement the drag and
             //pass the rotating state to this element
             isRotating={isRotating}
             setIsRotating={setIsRotating}
-
+            setCurrentStage={setCurrentStage}
           />
           <Plane 
             isRotating = {isRotating}

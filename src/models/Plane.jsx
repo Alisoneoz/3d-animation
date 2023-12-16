@@ -9,7 +9,6 @@ const Plane = ({ isRotating, ...props}) => {
     const { actions } = useAnimations(animations, ref);
 
     //play the pre-play action of rotating the plane's blade
-
     useEffect(()=>{
         if(isRotating){
            actions['Take 001'].play();
